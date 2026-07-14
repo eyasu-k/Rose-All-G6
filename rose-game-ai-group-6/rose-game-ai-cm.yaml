@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rose-game-ai-cm # modifiy name and namespace
+  labels:
+    app: rose-game-ai
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rose-game-ai
+  template:
+    metadata:
+      labels:
+        app: rose-game-ai
+    spec:
+      containers:
+        - name: rose-game-ai
+          image: quay.io/rose/rose-game-ai:latest  # Modify with your Docker image name and tag.
+          ports:
+          - containerPort: 8081
+          env:
+            - name: DRIVER
+              value: "/app/examples/mydriver.py"
+          volumeMounts:
+            - name: mydriver-volume
+              mountPath: "/app/examples/"
+      volumes:
+        - name: mydriver-volume
+          configMap:
+            name: mydriver-config # kubectl create configmap mydriver-config -n rose --from-file=mydriver.py
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: rose-game-ai-cm # modifiy name and namespace
+spec:
+  selector:
+    app: rose-game-ai
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+  type: ClusterIP
