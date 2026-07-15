@@ -38,7 +38,7 @@ body {
 }
 
 /* other controls */
-#run, #stop, #music_ctl, #reset {
+#run, #stop, #music_ctl, #reset, #next_music_ctl {
     width: 120px;
     height: 50px;
     margin: 0;

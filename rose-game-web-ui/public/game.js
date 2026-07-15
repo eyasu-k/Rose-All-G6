@@ -30,7 +30,7 @@ class App {
     this.cars = new Cars(imageLoader)
     this.finish_line = new FinishLine(imageLoader)
     this.infoUpdater = new Information()
-    this.sound = new Sound('assets/soundtrack/Nyan_Cat.ogg')
+    this.sound = new Sound()
   }
 
   onmessage (m) {
@@ -489,10 +489,19 @@ class ImageLoader {
 }
 
 class Sound {
-  constructor (filePath) {
+  constructor () {
     this.audio = new Audio()
-    this.audio.src = filePath
     this.playing = false
+    this.tracks = []
+    this.index = 0
+
+    fetch('/soundtracks')
+      .then(response => response.json())
+      .then(tracks => {
+        this.tracks = tracks
+        this.load(0)
+      })
+      .catch(error => console.log(`Failed to load soundtrack list: ${error}`))
 
     document.querySelector('#music_ctl').addEventListener('click', event => {
       event.preventDefault()
@@ -505,6 +514,28 @@ class Sound {
       }
       this.playing = !this.playing
     })
+
+    document.querySelector('#next_music_ctl').addEventListener('click', event => {
+      event.preventDefault()
+      this.next()
+    })
+  }
+
+  load (index) {
+    if (this.tracks.length === 0) {
+      return
+    }
+
+    this.index = index
+    this.audio.src = `assets/soundtrack/${this.tracks[this.index]}`
+
+    if (this.playing) {
+      this.play()
+    }
+  }
+
+  next () {
+    this.load((this.index + 1) % this.tracks.length)
   }
 
   play () {

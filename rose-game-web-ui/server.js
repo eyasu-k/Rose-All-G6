@@ -1,9 +1,12 @@
 const http = require('http')
 const https = require('https')
 const fs = require('fs')
+const path = require('path')
 const httpProxy = require('http-proxy')
 const express = require('express')
 const { ArgumentParser } = require('argparse')
+
+const SOUNDTRACK_DIR = path.join(__dirname, 'public', 'assets', 'soundtrack')
 
 /**
  * Create an Express application with static file serving and HTTP proxy setup.
@@ -13,6 +16,19 @@ const { ArgumentParser } = require('argparse')
 function createExpressApp (httpProxyTarget) {
   const app = express()
   app.use(express.static('public')) // Serve static files from 'public' directory
+
+  // List available soundtrack files so the client can cycle through them
+  app.get('/soundtracks', (req, res) => {
+    fs.readdir(SOUNDTRACK_DIR, (err, files) => {
+      if (err) {
+        res.status(500).json({ error: 'Unable to list soundtracks' })
+        return
+      }
+
+      const tracks = files.filter(file => file.toLowerCase().endsWith('.ogg'))
+      res.json(tracks)
+    })
+  })
 
   // Proxy HTTP requests to the specified target
   app.use('/api', (req, res) => {
