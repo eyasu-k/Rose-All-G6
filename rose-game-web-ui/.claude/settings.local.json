@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx eslint *)",
+      "Bash(node server.js -p 8099)",
+      "Bash(curl -s http://127.0.0.1:8099/soundtracks)",
+      "Bash(kill %1)"
+    ]
+  }
+}

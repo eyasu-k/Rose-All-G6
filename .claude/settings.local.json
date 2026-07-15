@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m pytest -q)",
+      "Bash(python3 *)",
+      "Bash(node -c public/game.js)",
+      "Bash(node --experimental-modules -e \"require\\('esm'\\)\")",
+      "Bash(echo \"exit:$?\")"
+    ]
+  }
+}
