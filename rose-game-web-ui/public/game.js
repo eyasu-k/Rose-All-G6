@@ -297,11 +297,11 @@ class Obstacles {
     this.textures = {}
 
     const obstacleAssets = {
-      barrier: 'barrier',
-      bike: 'bike',
+      barrier: 'brocoli',
+      bike: 'salad',
       crack: 'hotdog',
       penguin: 'burger',
-      trash: 'trash',
+      trash: 'tomato',
       water: 'pizza'
     }
 
