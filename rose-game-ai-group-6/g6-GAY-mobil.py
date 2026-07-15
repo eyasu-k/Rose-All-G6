@@ -51,25 +51,6 @@ class DriveEngine:
     
     def get_object_reward(self, x: int, y: int) -> str:
         obj = self.get_obj(x, y)
-        prev_obj = self.get_obj(x, y+1)
-        next_obj = self.get_obj(x, y-1)
-        
-        if obj == obstacles.NONE and next_obj in (obstacles.PENGUIN, obstacles.CRACK, obstacles.WATER):
-            return REWARDS[next_obj]
-        if obj in (obstacles.PENGUIN, obstacles.CRACK, obstacles.WATER) and prev_obj in (obstacles.PENGUIN, obstacles.NONE):
-            if self.__car_x != x and self.__car_y - y == 1: #checking if the item is even reachable to be picked/jumped/breaked       (the car cannot go diagonal and perform a special action if the object is found in the diagonal cell. the car needs to be 1 cell behind and on the same lane in order to perform a special action.)     
-                if obj == obstacles.PENGUIN:#moving on a penguin doesnt reduct any points so NEUTRAL is returned
-                    return NEUTRAL
-                return PUNISH#moving on other special objects without performing action reducts 10 points so PUNISH is returned.
-            return REWARDS[obj]
-        
-        if obj in (obstacles.PENGUIN, obstacles.CRACK, obstacles.WATER) and prev_obj not in (obstacles.PENGUIN, obstacles.NONE):
-            
-            if self.__car_x == x and self.__car_y - y == 1: #incase two waters/cracks appear on the same lane concecutively, we want to pick both of them and not just the first one and flag the second one as punishment just because its previous cell isnt a penguin or none
-                return REWARDS[obj]
-            return PUNISH
-        
-        
         return REWARDS[obj]
     
     def get_best_action(self):
@@ -102,7 +83,7 @@ class DriveEngine:
             step_action = first_step_action
             if current_depth == 0:
                 curr_obj = self.get_obj(next_x, next_y)
-                step_action = SPECIAL_ACTIONS.get(curr_obj, next_action)
+                step_action = next_action
             
             
             self.__scan_tree(

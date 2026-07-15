@@ -80,83 +80,25 @@ def process(players, track):
                 player.y,
             )
 
-        elif obstacle == obstacles.CRACK:
-            if player.action == actions.JUMP:
-                # Move forward leaving the obstacle on the track
-                points = config.score_move_forward + config.score_jump
-                player.score += points
-                player.jumps += 1
+        elif obstacle in (obstacles.WATER, obstacles.PENGUIN, obstacles.CRACK):
+            special_point = config.score_pickup
+            if obstacle == obstacles.WATER:
+                special_point = config.score_brake
+            elif obstacle == obstacles.CRACK:
+                special_point = config.score_jump
+                
+            track.clear(player.x, player.y)
+            points = config.score_move_forward + special_point
+            player.score += points
+            player.pickups += 1
 
-                log.debug(
-                    "player %s avoided %s: got %d points",
-                    player.name,
-                    obstacle,
-                    points,
-                )
-            else:
-                # Move back consuming the obstacle.
-                track.clear(player.x, player.y)
-                player.y += 1
-                player.score += config.score_move_backward
-                player.hits += 1
-
-                log.debug(
-                    "player %s hit %s: lost %d points, moved back to %d,%d",
-                    player.name,
-                    obstacle,
-                    -config.score_move_backward,
-                    player.x,
-                    player.y,
-                )
-
-        elif obstacle == obstacles.WATER:
-            if player.action == actions.BRAKE:
-                # Move forward leaving the obstacle on the track
-                points = config.score_move_forward + config.score_brake
-                player.score += points
-                player.breaks += 1
-
-                log.debug(
-                    "player %s avoided %s: got %d points",
-                    player.name,
-                    obstacle,
-                    points,
-                )
-            else:
-                # Move back consuming the obstacle.
-                track.clear(player.x, player.y)
-                player.y += 1
-                player.score += config.score_move_backward
-                player.hits += 1
-
-                log.debug(
-                    "player %s hit %s: lost %d points, moved back to %d,%d",
-                    player.name,
-                    obstacle,
-                    -config.score_move_backward,
-                    player.x,
-                    player.y,
-                )
-
-        elif obstacle == obstacles.PENGUIN:
-            if player.action == actions.PICKUP:
-                # Move forward and collect an aquatic bird
-                track.clear(player.x, player.y)
-                points = config.score_move_forward + config.score_pickup
-                player.score += points
-                player.pickups += 1
-
-                log.debug(
-                    "player %s picked up %s: got %d points",
-                    player.name,
-                    obstacle,
-                    points,
-                )
-            else:
-                # Move forward leaving the obstacle on the track
-                player.score += config.score_move_forward
-
-                log.debug("player %s missed %s", player.name, obstacle)
+            log.debug(
+                "player %s picked up %s: got %d points",
+                player.name,
+                obstacle,
+                points,
+            )
+                
 
         # Here we can end the game when player gets out of
         # the track bounds. For now, just keep the player at the same
