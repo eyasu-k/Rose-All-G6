@@ -296,10 +296,17 @@ class Obstacles {
     this.track = null
     this.textures = {}
 
-    const obstacleNames = ['barrier', 'bike', 'crack', 'penguin', 'trash', 'water']
+    const obstacleAssets = {
+      barrier: 'barrier',
+      bike: 'bike',
+      crack: 'hotdog',
+      penguin: 'burger',
+      trash: 'trash',
+      water: 'pizza'
+    }
 
-    obstacleNames.forEach(name => {
-      loader.load(`assets/obstacles/${name}.png`, (img) => {
+    Object.entries(obstacleAssets).forEach(([name, asset]) => {
+      loader.load(`assets/obstacles/${asset}.png`, (img) => {
         this.textures[name] = img
       })
     })
