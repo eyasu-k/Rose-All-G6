@@ -68,14 +68,18 @@ def process(players, track):
             # Move back consuming the obstacle.
             track.clear(player.x, player.y)
             player.y += 1
-            player.score += config.score_move_backward
+            penalty = config.score_move_backward
+            if player.sauce_hits_left > 0:
+                penalty = round(penalty * config.sauce_multiplier)
+                player.sauce_hits_left -= 1
+            player.score += penalty
             player.hits += 1
 
             log.debug(
                 "player %s hit %s: lost %d points, moved back to %d,%d",
                 player.name,
                 obstacle,
-                -config.score_move_backward,
+                -penalty,
                 player.x,
                 player.y,
             )
@@ -86,7 +90,11 @@ def process(players, track):
                 special_point = config.score_brake
             elif obstacle == obstacles.HOTDOG:
                 special_point = config.score_jump
-                
+
+            if player.sauce_hits_left > 0:
+                special_point = round(special_point * config.sauce_multiplier)
+                player.sauce_hits_left -= 1
+
             track.clear(player.x, player.y)
             points = config.score_move_forward + special_point
             player.score += points
@@ -98,7 +106,20 @@ def process(players, track):
                 obstacle,
                 points,
             )
-                
+
+        elif obstacle == obstacles.SAUCE:
+            # Move forward like an empty cell, then start (or refresh) the
+            # buff that amplifies the next sauce_effect_hits food hits.
+            track.clear(player.x, player.y)
+            player.score += config.score_move_forward
+            player.sauce_hits_left = config.sauce_effect_hits
+            player.sauces += 1
+
+            log.debug(
+                "player %s picked up sauce: buff active for next %d hits",
+                player.name,
+                config.sauce_effect_hits,
+            )
 
         # Here we can end the game when player gets out of
         # the track bounds. For now, just keep the player at the same

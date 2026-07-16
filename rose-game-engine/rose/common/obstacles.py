@@ -9,9 +9,15 @@ BURGER = "burger"  # NOQA
 SALAD = "salad"  # NOQA
 PIZZA = "pizza"  # NOQA
 BROCOLI = "brocoli"  # NOQA
+SAUCE = "sauce"  # NOQA
 
-ALL = (NONE, HOTDOG, TOMATO, BURGER, SALAD, PIZZA, BROCOLI)
+FOOD = (NONE, HOTDOG, TOMATO, BURGER, SALAD, PIZZA, BROCOLI)
+ALL = FOOD + (SAUCE,)
+
+SAUCE_CHANCE = 0.2
 
 
 def get_random_obstacle():
-    return random.choice(ALL)
+    if random.random() < SAUCE_CHANCE:
+        return SAUCE
+    return random.choice(FOOD)

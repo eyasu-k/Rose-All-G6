@@ -20,6 +20,7 @@ REWARDS = {
     obstacles.SALAD: -10,
     obstacles.PIZZA: 4,
     obstacles.BROCOLI: -10,
+    obstacles.SAUCE: 0,
 }
 
 PUNISH = -10
@@ -31,6 +32,12 @@ SPECIAL_ACTIONS = {
     obstacles.HOTDOG: actions.JUMP,
     obstacles.PIZZA: actions.BRAKE,
 }
+
+# Mirrors rose.engine.config.sauce_multiplier / sauce_effect_hits on the
+# engine side - the AI package has no access to that module, so these must
+# be kept in sync by hand if the engine values ever change.
+SAUCE_MULTIPLIER = 1.15
+SAUCE_EFFECT_HITS = 3
 
 
 class DriveEngine:
@@ -51,46 +58,57 @@ class DriveEngine:
     
     def get_object_reward(self, x: int, y: int) -> str:
         obj = self.get_obj(x, y)
-        return REWARDS[obj]
-    
+        return REWARDS.get(obj, NEUTRAL)
+
     def get_best_action(self):
         self.__possible_paths = []
-        self.__scan_tree(self.__car_x, 0, 0, actions.NONE)
-        
+        sauce_charges = getattr(self.__world.car, "sauce_hits_left", 0) or 0
+        self.__scan_tree(self.__car_x, 0, 0, actions.NONE, sauce_charges)
+
         self.__possible_paths.sort(key=lambda path_tuple: path_tuple[PATH_SCORE_IDX], reverse=True)
-        
+
         best_action = self.__possible_paths[0][PATH_ACTION_IDX]
         return best_action
 
-    def __scan_tree(self, current_x, current_depth, current_score, first_step_action):
+    def __scan_tree(self, current_x, current_depth, current_score, first_step_action, sauce_charges):
         current_x = current_x % 3
         if current_depth == MAX_DEPTH:
             self.__possible_paths.append((current_score, first_step_action))
             return
-        
+
         next_y = self.__car_y - 1 - current_depth
-        
+
         possible_moves = [(current_x, actions.NONE)]
         if current_x > 0:
             possible_moves.append((current_x - 1, actions.LEFT))
-            
+
         if current_x < 2:
             possible_moves.append((current_x + 1, actions.RIGHT))
-            
+
         for next_x, next_action in possible_moves:
-            cell_reward = self.get_object_reward(next_x, next_y)
-            
+            obj = self.get_obj(next_x, next_y)
+            cell_reward = REWARDS.get(obj, NEUTRAL)
+            next_sauce_charges = sauce_charges
+
+            # Simulate the sauce buff along this path: taking a sauce
+            # (re)arms the next SAUCE_EFFECT_HITS food hits, and while armed
+            # every food hit's reward is amplified and consumes one charge.
+            if obj == obstacles.SAUCE:
+                next_sauce_charges = SAUCE_EFFECT_HITS
+            elif obj not in (obstacles.NONE, None) and sauce_charges > 0:
+                cell_reward = round(cell_reward * SAUCE_MULTIPLIER)
+                next_sauce_charges = sauce_charges - 1
+
             step_action = first_step_action
             if current_depth == 0:
-                curr_obj = self.get_obj(next_x, next_y)
                 step_action = next_action
-            
-            
+
             self.__scan_tree(
                 current_x=next_x,
                 current_depth=current_depth + 1,
                 current_score=current_score + cell_reward,
-                first_step_action=step_action
+                first_step_action=step_action,
+                sauce_charges=next_sauce_charges,
             )
 
             

@@ -39,6 +39,8 @@ class Player(object):
         self.breaks = None
         self.jumps = None
         self.collisions = None
+        self.sauces = None
+        self.sauce_hits_left = None
         self.reset()
 
     def reset(self):
@@ -53,6 +55,8 @@ class Player(object):
         self.breaks = 0
         self.collisions = 0
         self.jumps = 0
+        self.sauces = 0
+        self.sauce_hits_left = 0
 
     def __cmp__(self, other):
         x = self.score
@@ -84,4 +88,6 @@ class Player(object):
             "breaks": self.breaks,
             "jumps": self.jumps,
             "collisions": self.collisions,
+            "sauces": self.sauces,
+            "sauce_hits_left": self.sauce_hits_left,
         }

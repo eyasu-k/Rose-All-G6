@@ -5,7 +5,7 @@ drivers = []
 run = "stop"
 
 game_rate = 1.0
-game_duration = 60
+game_duration = 100
 
 matrix_height = 9
 matrix_width = 6
@@ -18,3 +18,6 @@ score_move_backward = -10
 score_pickup = 10
 score_jump = 5
 score_brake = 4
+
+sauce_multiplier = 1.15
+sauce_effect_hits = 3

@@ -61,7 +61,17 @@ async def fetch_driver_action(session, player, track_matrix):
 
 
 async def send_post_request(session, player, track_matrix):
-    data = {"info": {"car": {"x": player.x, "y": player.y}}, "track": track_matrix}
+    data = {
+        "info": {
+            "car": {
+                "x": player.x,
+                "y": player.y,
+                "sauce_active": player.sauce_hits_left > 0,
+                "sauce_hits_left": player.sauce_hits_left,
+            }
+        },
+        "track": track_matrix,
+    }
 
     async with session.post(player.URL, data=json.dumps(data).encode()) as response:
         return await response.json()

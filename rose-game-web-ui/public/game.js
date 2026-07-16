@@ -302,7 +302,8 @@ class Obstacles {
       hotdog: 'hotdog',
       burger: 'burger',
       tomato: 'tomato',
-      pizza: 'pizza'
+      pizza: 'pizza',
+      sauce: 'sauce'
     }
 
     Object.entries(obstacleAssets).forEach(([name, asset]) => {
@@ -460,6 +461,10 @@ class Information {
       infoText += `Missed: ${player.misses}<br/>`
       infoText += `Crashes: ${player.hits}<br/>`
       infoText += `Collisions: ${player.collisions}<br/>`
+
+      if (player.sauce_hits_left > 0) {
+        infoText += `Sauce buff: ${player.sauce_hits_left} hit(s) left<br/>`
+      }
 
       infoText += '<br/><br/>'
     })

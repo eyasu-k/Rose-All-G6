@@ -209,6 +209,94 @@ class TestBrocoli(TurnTest):
     obstacle = obstacles.BROCOLI
 
 
+class TestSauce(SinglePlayerTest):
+    """
+    Handling sauce
+
+    Sauce gives no bonus/penalty by itself (same score as an empty cell),
+    but starts (or refreshes) a buff that amplifies the next
+    config.sauce_effect_hits food hits by config.sauce_multiplier.
+    """
+
+    obstacle = obstacles.SAUCE
+
+    @pytest.mark.parametrize("action", FORWARD_ACTIONS)
+    def test_forward(self, action):
+        self.player.action = action
+        self.process()
+        self.assert_score(self.score)
+        self.assert_remove_obstacle()
+        assert self.player.sauce_hits_left == config.sauce_effect_hits
+
+    def test_right(self):
+        self.player.action = actions.RIGHT
+        self.process()
+        self.assert_move_right()
+        self.assert_keep_obstacle()
+
+    def test_left(self):
+        self.player.action = actions.LEFT
+        self.process()
+        self.assert_move_left()
+        self.assert_keep_obstacle()
+
+    def test_refreshes_existing_buff_instead_of_stacking(self):
+        self.player.sauce_hits_left = 1
+        self.player.action = actions.NONE
+        self.process()
+        assert self.player.sauce_hits_left == config.sauce_effect_hits
+
+
+class TestSauceAmplifiesPickup(SinglePlayerTest):
+    obstacle = obstacles.BURGER
+
+    def test_pickup_amplified_and_decrements_buff(self):
+        self.player.sauce_hits_left = 3
+        self.player.action = actions.PICKUP
+        self.process()
+        amplified_bonus = round(config.score_pickup * config.sauce_multiplier)
+        assert self.player.score == (
+            self.score + config.score_move_forward + amplified_bonus
+        )
+        assert self.player.sauce_hits_left == 2
+        self.assert_remove_obstacle()
+
+
+class TestSauceAmplifiesHit(SinglePlayerTest):
+    obstacle = obstacles.TOMATO
+
+    def test_hit_amplified_and_decrements_buff(self):
+        self.player.sauce_hits_left = 3
+        self.player.action = actions.NONE
+        self.process()
+        amplified_penalty = round(config.score_move_backward * config.sauce_multiplier)
+        assert self.player.x == self.x
+        assert self.player.y == self.y + 1
+        assert self.player.score == self.score + amplified_penalty
+        assert self.player.sauce_hits_left == 2
+        self.assert_remove_obstacle()
+
+
+class TestSauceBuffExpiresAfterConfiguredHits(SinglePlayerTest):
+    obstacle = obstacles.BURGER
+
+    def test_hit_after_buff_expires_is_not_amplified(self):
+        self.player.sauce_hits_left = 1
+        self.player.action = actions.PICKUP
+        self.process()
+        assert self.player.sauce_hits_left == 0
+
+        # Re-arm the same cell for a second, now-unbuffed hit.
+        self.track.set(self.x, self.y, self.obstacle)
+        score_before = self.player.score
+        self.player.action = actions.PICKUP
+        self.process()
+        assert self.player.score == (
+            score_before + config.score_move_forward + config.score_pickup
+        )
+        assert self.player.sauce_hits_left == 0
+
+
 class TestLimits(SinglePlayerTest):
     """
     Handling movement out of the track
