@@ -3,14 +3,14 @@
 import random
 
 NONE = ""  # NOQA
-CRACK = "crack"  # NOQA
-TRASH = "trash"  # NOQA
-PENGUIN = "penguin"  # NOQA
-BIKE = "bike"  # NOQA
-WATER = "water"  # NOQA
-BARRIER = "barrier"  # NOQA
+HOTDOG = "hotdog"  # NOQA
+TOMATO = "tomato"  # NOQA
+BURGER = "burger"  # NOQA
+SALAD = "salad"  # NOQA
+PIZZA = "pizza"  # NOQA
+BROCOLI = "brocoli"  # NOQA
 
-ALL = (NONE, CRACK, TRASH, PENGUIN, BIKE, WATER, BARRIER)
+ALL = (NONE, HOTDOG, TOMATO, BURGER, SALAD, PIZZA, BROCOLI)
 
 
 def get_random_obstacle():

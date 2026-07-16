@@ -64,7 +64,7 @@ def process(players, track):
                 config.score_move_forward,
             )
 
-        elif obstacle in (obstacles.TRASH, obstacles.BIKE, obstacles.BARRIER):
+        elif obstacle in (obstacles.TOMATO, obstacles.SALAD, obstacles.BROCOLI):
             # Move back consuming the obstacle.
             track.clear(player.x, player.y)
             player.y += 1
@@ -80,11 +80,11 @@ def process(players, track):
                 player.y,
             )
 
-        elif obstacle in (obstacles.WATER, obstacles.PENGUIN, obstacles.CRACK):
+        elif obstacle in (obstacles.PIZZA, obstacles.BURGER, obstacles.HOTDOG):
             special_point = config.score_pickup
-            if obstacle == obstacles.WATER:
+            if obstacle == obstacles.PIZZA:
                 special_point = config.score_brake
-            elif obstacle == obstacles.CRACK:
+            elif obstacle == obstacles.HOTDOG:
                 special_point = config.score_jump
                 
             track.clear(player.x, player.y)

@@ -31,7 +31,7 @@ def test_post_valid_data(start_server):
     payload = {
         "info": {"car": {"x": 3, "y": 8}},
         "track": [
-            ["", "", "bike"],
+            ["", "", "salad"],
             ["", "", ""],
             ["", "", ""],
             ["", "", ""],

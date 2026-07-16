@@ -80,15 +80,15 @@ class TestNoObstacle(SinglePlayerTest):
         self.assert_keep_obstacle()
 
 
-class TestPenguin(SinglePlayerTest):
+class TestBurger(SinglePlayerTest):
     """
-    Handling penguins
+    Handling burgers
 
-    If player pick the penguin, it move forward and get more score. Otherwise
-    the penguin is skipped and can be picked by other players.
+    If player pick the burger, it move forward and get more score. Otherwise
+    the burger is skipped and can be picked by other players.
     """
 
-    obstacle = obstacles.PENGUIN
+    obstacle = obstacles.BURGER
 
     def test_pickup(self):
         self.player.action = actions.PICKUP
@@ -157,15 +157,15 @@ class MagicActionTest(SinglePlayerTest):
         self.assert_keep_obstacle()
 
 
-class TestCrack(MagicActionTest):
+class TestHotdog(MagicActionTest):
     magic_score = config.score_jump
-    obstacle = obstacles.CRACK
+    obstacle = obstacles.HOTDOG
     action = actions.JUMP
 
 
-class TestWater(MagicActionTest):
+class TestPizza(MagicActionTest):
     magic_score = config.score_brake
-    obstacle = obstacles.WATER
+    obstacle = obstacles.PIZZA
     action = actions.BRAKE
 
 
@@ -197,16 +197,16 @@ class TurnTest(SinglePlayerTest):
         self.assert_remove_obstacle()
 
 
-class TestTrash(TurnTest):
-    obstacle = obstacles.TRASH
+class TestTomato(TurnTest):
+    obstacle = obstacles.TOMATO
 
 
-class TestBike(TurnTest):
-    obstacle = obstacles.BIKE
+class TestSalad(TurnTest):
+    obstacle = obstacles.SALAD
 
 
-class TestBarrier(TurnTest):
-    obstacle = obstacles.BARRIER
+class TestBrocoli(TurnTest):
+    obstacle = obstacles.BROCOLI
 
 
 class TestLimits(SinglePlayerTest):
@@ -235,7 +235,7 @@ class TestLimits(SinglePlayerTest):
     def test_forward(self):
         self.y = self.player.y = 0
         self.player.action = actions.PICKUP
-        self.obstacle = obstacles.PENGUIN
+        self.obstacle = obstacles.BURGER
         self.track.set(self.x, self.y, self.obstacle)
         self.process()
         # Player keep position but get more score
@@ -249,7 +249,7 @@ class TestLimits(SinglePlayerTest):
         self.y = self.player.y = config.matrix_height - 1
         self.player.action = actions.NONE
         self.player.score = 0
-        self.obstacle = obstacles.TRASH
+        self.obstacle = obstacles.TOMATO
         self.track.set(self.x, self.y, self.obstacle)
         self.process()
         self.assert_score(config.score_move_backward * 2)
@@ -277,13 +277,13 @@ class TestCollisions(object):
         score.process(players, self.track)
 
     def test_player_in_lane_wins(self):
-        self.track.set(1, 6, obstacles.PENGUIN)
-        # Player 1 in its lane at 1,5, missed the penguin.
+        self.track.set(1, 6, obstacles.BURGER)
+        # Player 1 in its lane at 1,5, missed the burger.
         self.player1.x = 1
         self.player1.y = 5
         self.player1.score = 0
         self.player1.action = actions.NONE
-        # Player 2 is not in its lane, trying to pick up the penguin.
+        # Player 2 is not in its lane, trying to pick up the burger.
         self.player2.x = 1
         self.player2.y = 6
         self.player2.score = 0
@@ -293,7 +293,7 @@ class TestCollisions(object):
         assert self.player1.x == 1
         assert self.player1.y == 5
         assert self.player1.score == config.score_move_forward
-        # Player 2 picked up the penging, got extra score.
+        # Player 2 picked up the burger, got extra score.
         assert self.player2.x == 1
         assert self.player2.y == 6
         assert self.player2.score == config.score_move_forward * 2

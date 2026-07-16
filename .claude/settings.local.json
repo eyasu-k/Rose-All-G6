@@ -5,7 +5,9 @@
       "Bash(python3 *)",
       "Bash(node -c public/game.js)",
       "Bash(node --experimental-modules -e \"require\\('esm'\\)\")",
-      "Bash(echo \"exit:$?\")"
+      "Bash(echo \"exit:$?\")",
+      "Bash(grep -v -E '\\\\.\\(png|jpg|jpeg|gif|ico|svg|webp|bmp|woff|woff2|ttf|eot|mp3|wav|mp4\\)$')",
+      "Bash(git stash *)"
     ]
   }
 }

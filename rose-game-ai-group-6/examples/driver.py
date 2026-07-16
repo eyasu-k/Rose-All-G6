@@ -21,11 +21,11 @@ def drive(world):
     y = world.car.y
     obstacle = world.get((x, y - 1))
 
-    if obstacle == obstacles.PENGUIN:
+    if obstacle == obstacles.BURGER:
         return actions.PICKUP
-    elif obstacle == obstacles.WATER:
+    elif obstacle == obstacles.PIZZA:
         return actions.BRAKE
-    elif obstacle == obstacles.CRACK:
+    elif obstacle == obstacles.HOTDOG:
         return actions.JUMP
     elif obstacle == obstacles.NONE:
         return actions.NONE

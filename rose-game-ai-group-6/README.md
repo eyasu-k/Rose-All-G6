@@ -98,15 +98,15 @@ curl -X POST -H "Content-Type: application/json" -d '{
                 }
             },
             "track": [
-                ["", "", "bike", "", "", ""],
-                ["", "crack", "", "", "trash", ""],
-                ["", "", "penguin", "", "", "water"],
-                ["", "water", "", "trash", "", ""],
-                ["barrier", "", "", "", "bike", ""],
-                ["", "", "trash", "", "", ""],
-                ["", "crack", "", "", "", "bike"],
-                ["", "", "", "penguin", "water", ""],
-                ["", "", "bike", "", "", ""]
+                ["", "", "salad", "", "", ""],
+                ["", "hotdog", "", "", "tomato", ""],
+                ["", "", "burger", "", "", "pizza"],
+                ["", "pizza", "", "tomato", "", ""],
+                ["brocoli", "", "", "", "salad", ""],
+                ["", "", "tomato", "", "", ""],
+                ["", "hotdog", "", "", "", "salad"],
+                ["", "", "", "burger", "pizza", ""],
+                ["", "", "salad", "", "", ""]
             ]
         }' http://localhost:8081/
 ```

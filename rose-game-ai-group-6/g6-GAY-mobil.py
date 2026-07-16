@@ -14,12 +14,12 @@ PATH_ACTION_IDX = 1
 #default rewards when the driver interacts with the objects listed below
 REWARDS = {
     obstacles.NONE: 0,
-    obstacles.CRACK: 5,
-    obstacles.TRASH: -10,
-    obstacles.PENGUIN: 10,
-    obstacles.BIKE: -10,
-    obstacles.WATER: 4,
-    obstacles.BARRIER: -10,
+    obstacles.HOTDOG: 5,
+    obstacles.TOMATO: -10,
+    obstacles.BURGER: 10,
+    obstacles.SALAD: -10,
+    obstacles.PIZZA: 4,
+    obstacles.BROCOLI: -10,
 }
 
 PUNISH = -10
@@ -27,9 +27,9 @@ NEUTRAL = 0
 
 #dictionary of special actions required to acquire when reaching special objects
 SPECIAL_ACTIONS = {
-    obstacles.PENGUIN: actions.PICKUP,
-    obstacles.CRACK: actions.JUMP,
-    obstacles.WATER: actions.BRAKE,
+    obstacles.BURGER: actions.PICKUP,
+    obstacles.HOTDOG: actions.JUMP,
+    obstacles.PIZZA: actions.BRAKE,
 }
 
 

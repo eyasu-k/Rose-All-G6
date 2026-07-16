@@ -297,12 +297,12 @@ class Obstacles {
     this.textures = {}
 
     const obstacleAssets = {
-      barrier: 'brocoli',
-      bike: 'salad',
-      crack: 'hotdog',
-      penguin: 'burger',
-      trash: 'tomato',
-      water: 'pizza'
+      brocoli: 'brocoli',
+      salad: 'salad',
+      hotdog: 'hotdog',
+      burger: 'burger',
+      tomato: 'tomato',
+      pizza: 'pizza'
     }
 
     Object.entries(obstacleAssets).forEach(([name, asset]) => {

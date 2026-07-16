@@ -80,33 +80,33 @@ them:
                         action.
                         Score : 0
 
-* `obstacles.PENGUIN`   return `actions.PICKUP` and move forward. You will
-                        move forward even if you do not pick up the penguin.
+* `obstacles.BURGER`    return `actions.PICKUP` and move forward. You will
+                        move forward even if you do not pick up the burger.
                         Score : 10 for `PICKUP` otherwise 0
 
-* `obstacles.WATER`     return `actions.BRAKE` if you want to continue forward.
+* `obstacles.PIZZA`     return `actions.BRAKE` if you want to continue forward.
                         return `actions.RIGHT` or `actions.LEFT` if you like to
                         bypass the obstacle. Any other action will cause you to
                         stay in place.
                         Score: 4 for `BRAKE`, 0 for `LEFT`/`RIGHT` otherwise -10
 
-* `obstacles.CRACK`     return `actions.JUMP` if you want to continue forward
+* `obstacles.HOTDOG`    return `actions.JUMP` if you want to continue forward
                         return `actions.RIGHT` or `actions.LEFT` if you like to
                         bypass the obstacle. Any other action will cause you to
                         stay in place.
                         Score: 5 for `JUMP`, 0 for `LEFT`/`RIGHT` otherwise -10
 
-* `obstacles.TRASH`     you must return `actions.RIGHT` or `actions.LEFT` to bypass
+* `obstacles.TOMATO`    you must return `actions.RIGHT` or `actions.LEFT` to bypass
                         the obstacle. Any other action will cause you to
                         stay in place.
                         Score: 0 for `LEFT`/`RIGHT` otherwise -10
 
-* `obstacles.BIKE`      you must return `actions.RIGHT` or `actions.LEFT` to bypass
+* `obstacles.SALAD`     you must return `actions.RIGHT` or `actions.LEFT` to bypass
                         the obstacle. Any other action will cause you to
                         stay in place.
                         Score: 0 for `LEFT`/`RIGHT` otherwise -10
 
-* `obstacles.BARRIER`   you must return `actions.RIGHT` or `actions.LEFT` to bypass
+* `obstacles.BROCOLI`   you must return `actions.RIGHT` or `actions.LEFT` to bypass
                         the obstacle. Any other action will cause you to
                         stay in place.
                         Score: 0 for `LEFT`/`RIGHT` otherwise -10
